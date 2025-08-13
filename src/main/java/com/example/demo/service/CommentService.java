@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,4 +61,12 @@ public class CommentService {
                 .commentDate(comment.getCommentDate())
                 .build();
     }
+    public List<CommentDTO> getCommentsByEmployeeAndDate(Long employeeId, LocalDate commentDate) {
+        List<Comment> comments = commentRepo.findByEmployeeIdAndCommentDate(employeeId, commentDate);
+        return comments.stream()
+                       .map(this::mapToDTO)
+                       .toList();
+    }
+
+
 }

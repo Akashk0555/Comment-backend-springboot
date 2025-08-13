@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +34,14 @@ public class CommentController {
     public List<CommentDTO> getComments(@PathVariable Long employeeId) {
         return service.getCommentsByEmployee(employeeId);
     }
+    @GetMapping("/date/{commentDate}")
+    public List<CommentDTO> getCommentsByEmployeeAndDate(
+            @PathVariable Long employeeId,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate commentDate) {
+        return service.getCommentsByEmployeeAndDate(employeeId, commentDate);
+    }
+
+
 
     @PostMapping
     public CommentDTO addComment(@PathVariable Long employeeId, @Valid @RequestBody CommentDTO dto) {

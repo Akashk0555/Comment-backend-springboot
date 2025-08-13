@@ -4,8 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.entity.Comment;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByEmployeeId(Long employeeId);
+    List<Comment> findByEmployeeIdAndCommentDate(Long employeeId, LocalDate commentDate);
+
 }
