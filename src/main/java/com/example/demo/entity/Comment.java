@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +35,11 @@ public class Comment {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime updatedAt;
+
 
     // Manually assigned date for which the comment applies
     @Column(nullable = false)

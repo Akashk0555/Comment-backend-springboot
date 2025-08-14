@@ -57,6 +57,7 @@ public class EmployeeService {
                                         .text(comment.getText())
                                         .commentDate(comment.getCommentDate())
                                         .createdAt(comment.getCreatedAt())
+                                        .updatedAt(comment.getUpdatedAt())
                                         .employeeId(employee.getId())
                                         .build())
                                 .toList()

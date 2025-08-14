@@ -30,5 +30,8 @@ public class CommentDTO {
     @NotNull(message = "Comment date is required")
     private LocalDate commentDate;
 
-    private LocalDateTime createdAt; // system timestamp
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt;
+// system timestamp
 }
