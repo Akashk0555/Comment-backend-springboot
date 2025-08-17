@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTOs.CommentDTO;
-import com.example.demo.DTOs.CommentRangeRequestDTO;
 import com.example.demo.entity.Comment;
 import com.example.demo.entity.Employee;
 import com.example.demo.exception.ResourceNotFoundException;
@@ -78,64 +76,12 @@ public class CommentService {
     }
 
 
-    public void deleteComment(Long commentId, Long employeeId) {
-        Comment comment = commentRepo.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with ID: " + commentId));
-
-        // Check if this comment actually belongs to the employee
-        if (!comment.getEmployee().getId().equals(employeeId)) {
-            throw new IllegalArgumentException("Comment does not belong to the specified employee.");
+    public void deleteComment(Long commentId) {
+        if (!commentRepo.existsById(commentId)) {
+            throw new ResourceNotFoundException("Comment not found with ID: " + commentId);
         }
-
-        commentRepo.delete(comment);
+        commentRepo.deleteById(commentId);
     }
-    
-
-    public void addCommentForDateRange(CommentRangeRequestDTO request) {
-        Employee employee = employeeRepo.findById(request.getEmployeeId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Employee not found with ID: " + request.getEmployeeId()));
-
-        if (request.getEndDate().isBefore(request.getStartDate())) {
-            throw new IllegalArgumentException("End date cannot be before start date");
-        }
-
-        List<Comment> comments = new ArrayList<>();
-        LocalDate currentDate = request.getStartDate();
-
-        while (!currentDate.isAfter(request.getEndDate())) {
-            comments.add(
-                Comment.builder()
-                        .author(request.getAuthor())
-                        .text(request.getText())
-                        .employee(employee)
-                        .commentDate(currentDate)
-                        .build()
-            );
-            currentDate = currentDate.plusDays(1);
-        }
-
-        // Bulk insert in one DB call
-        commentRepo.saveAll(comments);
-    }
-    
-//    public void addCommentForDateRange(Long employeeId, LocalDate startDate, LocalDate endDate, CommentDTO dto) {
-//        Employee employee = employeeRepo.findById(employeeId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
-//
-//        LocalDate current = startDate;
-//        while (!current.isAfter(endDate)) {
-//            Comment comment = Comment.builder()
-//                    .author(dto.getAuthor())
-//                    .text(dto.getText())
-//                    .commentDate(current)
-//                    .employee(employee)
-//                    .build();
-//            commentRepo.save(comment);
-//            current = current.plusDays(1);
-//        }
-//    }
-
 
     private CommentDTO mapToDTO(Comment comment) {
         return CommentDTO.builder()
