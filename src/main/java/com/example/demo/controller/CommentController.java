@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTOs.CommentDTO;
-import com.example.demo.DTOs.CommentRangeRequestDTO;
 import com.example.demo.service.CommentService;
 
 import jakarta.validation.Valid;
@@ -43,22 +41,6 @@ public class CommentController {
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate commentDate) {
         return service.getCommentsByEmployeeAndDate(employeeId, commentDate);
     }
-    @PostMapping("/range")
-    public ResponseEntity<String> addCommentForDateRange(@Valid @RequestBody CommentRangeRequestDTO request) {
-        service.addCommentForDateRange(request);
-        return ResponseEntity.ok("Comments added for date range successfully");
-    }
-    
-//    @PostMapping("/employees/{employeeId}/comments/{startDate}/{endDate}")
-//    public ResponseEntity<Void> addCommentForDateRange(
-//            @PathVariable Long employeeId,
-//            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-//            @Valid @RequestBody CommentDTO commentDTO) {
-//
-//        service.addCommentForDateRange(employeeId, startDate, endDate, commentDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
 
 
 
@@ -79,10 +61,8 @@ public class CommentController {
 
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(
-            @PathVariable Long employeeId,
-            @PathVariable Long commentId) {
-        service.deleteComment(commentId, employeeId);
-        return ResponseEntity.noContent().build(); // 204 No Content
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        service.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
     }
 }
